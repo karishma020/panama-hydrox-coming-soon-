@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panama HydroX — Coming Soon</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dark: #0a0e0d;
+    --dark2: #0f1512;
+    --dark3: #141b18;
+    --panel: #111714;
+    --green: #2ec87a;
+    --teal: #1aacb0;
+    --green-dim: #1a7a4a;
+    --teal-dim: #0f6e72;
+    --text: #e8ede9;
+    --text-muted: #8a9e90;
+    --text-dim: #4a5e50;
+    --border: rgba(46,200,122,0.12);
+    --border-bright: rgba(46,200,122,0.28);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* Animated noise grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 2rem 2rem;
+    overflow: hidden;
+  }
+
+  /* Radial glow backgrounds */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(26,172,176,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .glow-bottom {
+    position: absolute;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(46,200,122,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  /* Horizontal lines */
+  .grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(46,200,122,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(46,200,122,0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.4rem 3rem;
+    border-bottom: 1px solid rgba(46,200,122,0.08);
+    background: rgba(10,14,13,0.82);
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .nav-wordmark {
+    font-family: 'Jost', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.25em;
+    color: var(--text);
+  }
+
+  .nav-wordmark span {
+    color: var(--teal);
+  }
+
+  .nav-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  /* Hero content */
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.38em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 1;
+  }
+
+  .hero-eyebrow::before,
+  .hero-eyebrow::after {
+    content: '—';
+    margin: 0 0.8em;
+    color: var(--green-dim);
+  }
+
+  .hero-logo-wrap {
+    margin-bottom: 2.2rem;
+    opacity: 1;
+  }
+
+  .hero-logo-svg {
+    width: 90px;
+    height: 110px;
+    filter: drop-shadow(0 0 18px rgba(46,200,122,0.3));
+    overflow: visible;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.2rem;
+    opacity: 1;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .hero-sub {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 3rem;
+    opacity: 1;
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    margin: 0 auto 2.8rem;
+    opacity: 1;
+  }
+
+  .hero-statement {
+    max-width: 560px;
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    margin-bottom: 3.5rem;
+    opacity: 1;
+  }
+
+  .hero-statement strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 1;
+  }
+
+  .scroll-hint span {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  .scroll-arrow {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--green-dim), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
+    50% { opacity: 1; transform: scaleY(1); }
+  }
+
+  /* ── ORIGIN SECTION ── */
+  .section {
+    padding: 7rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.4em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    max-width: 60px;
+    height: 1px;
+    background: var(--green-dim);
+  }
+
+  .origin-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: start;
+  }
+
+  .origin-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.2;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+
+  .origin-left h2 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .origin-text {
+    font-size: 0.95rem;
+    color: var(--text);
+    line-height: 1.9;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    opacity: 0.75;
+  }
+
+  .origin-text + .origin-text { margin-top: 1.2rem; }
+
+  .pull-quote {
+    border-left: 2px solid var(--green);
+    padding: 1.2rem 1.5rem;
+    margin: 2.5rem 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* Stats column */
+  .origin-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5px;
+  }
+
+  .stat-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 2rem 1.8rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .stat-card:hover { border-color: var(--border-bright); }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 0;
+    background: linear-gradient(to bottom, var(--green), var(--teal));
+    transition: height 0.4s ease;
+  }
+
+  .stat-card:hover::before { height: 100%; }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 2.8rem;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .stat-desc {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* ── APPROACH ── */
+  .approach-section {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--dark2);
+    padding: 7rem 2rem;
+  }
+
+  .approach-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .approach-headline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    text-align: center;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .approach-headline em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .approach-sub {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    font-weight: 300;
+    margin-bottom: 5rem;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .pillar {
+    background: var(--dark2);
+    padding: 3rem 2.2rem;
+    position: relative;
+    transition: background 0.3s;
+  }
+
+  .pillar:hover { background: var(--dark3); }
+
+  .pillar-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 300;
+    color: rgba(46,200,122,0.35);
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    transition: color 0.3s;
+  }
+
+  .pillar:hover .pillar-num { color: rgba(46,200,122,0.6); }
+
+  .pillar-title {
+    font-size: 0.78rem;
+    letter-spacing: 0.3em;
+    color: var(--green);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .pillar h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
+  .pillar p {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.8;
+    font-weight: 300;
+    opacity: 0.72;
+  }
+
+  /* ── CROPS STRIP ── */
+  .crops-section {
+    padding: 7rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .crops-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 4rem;
+  }
+
+  .crop-card {
+    background: var(--dark);
+    padding: 2.5rem 2rem;
+    border: 0;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .crop-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--green), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .crop-card:hover { background: var(--panel); }
+  .crop-card:hover::after { opacity: 1; }
+
+  .crop-icon {
+    font-size: 1.8rem;
+    margin-bottom: 1.2rem;
+    display: block;
+  }
+
+  .crop-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .crop-category {
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .crop-desc {
+    font-size: 0.88rem;
+    color: var(--text);
+    line-height: 1.7;
+    font-weight: 300;
+    opacity: 0.75;
+  }
+
+  .crop-value {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+  }
+
+  .crop-value-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--green);
+  }
+
+  .crop-value-label {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── VISION ── */
+  .vision-section {
+    background: var(--dark2);
+    border-top: 1px solid var(--border);
+    padding: 9rem 2rem;
+    text-align: center;
+  }
+
+  .vision-inner {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .vision-ornament {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, transparent, var(--green));
+    margin: 0 auto 3rem;
+  }
+
+  .vision-inner h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 300;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    line-height: 1.2;
+    margin-bottom: 2.5rem;
+    color: var(--text);
+  }
+
+  .vision-inner h2 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .vision-para {
+    font-size: 1rem;
+    color: var(--text);
+    line-height: 2;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.4rem;
+    opacity: 0.75;
+  }
+
+  .vision-close {
+    margin-top: 3rem;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    width: 100%;
+    background: #080c0b;
+    border-top: 1px solid var(--border-bright);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    gap: 1rem;
+    text-align: center;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .logo-icon { overflow: hidden; }
+  .hero-logo-svg { overflow: hidden; }
+  .footer-logo-icon { width: 28px; height: 28px; overflow: hidden; }
+
+  .footer-brand {
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .footer-brand span { color: var(--teal); }
+
+  .footer-right {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.12em;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--green); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .reveal.animate-ready {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .reveal.animate-ready.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .origin-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .pillars { grid-template-columns: 1fr; }
+    .crops-grid { grid-template-columns: 1fr; }
+    .footer-inner { flex-direction: column; gap: 1.5rem; text-align: center; }
+    .footer-links { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg class="logo-icon" viewBox="0 -4 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="ng1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#1e4a30"/>
+          <stop offset="50%" stop-color="#103a48"/>
+          <stop offset="100%" stop-color="#081e2e"/>
+        </linearGradient>
+        <clipPath id="nc1">
+          <path d="M18 2 C18 2 5 13 5 24 C5 31.8 11 38 18 38 C25 38 31 31.8 31 24 C31 13 18 2 18 2Z"/>
+        </clipPath>
+      </defs>
+      <path d="M18 2 C18 2 5 13 5 24 C5 31.8 11 38 18 38 C25 38 31 31.8 31 24 C31 13 18 2 18 2Z" fill="url(#ng1)"/>
+      <g clip-path="url(#nc1)">
+        <line x1="18" y1="2" x2="18" y2="38" stroke="rgba(0,0,0,0.4)" stroke-width="0.8"/>
+        <path d="M10 18 C9 22 9 26 10 30 C11 33 13 35 15 36" stroke="#1aacb0" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+        <path d="M14 13 C12 17 12 21 14 24" stroke="#1aacb0" stroke-width="1" stroke-linecap="round" fill="none" opacity="0.5"/>
+        <path d="M22 20 L22 30" stroke="#2ec87a" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M22 24 L25 21" stroke="#2ec87a" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M22 28 L25 26" stroke="#2ec87a" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="26" cy="19" r="1.2" fill="#2ec87a"/>
+        <circle cx="27" cy="24" r="1" fill="#1aacb0"/>
+        <circle cx="25" cy="29" r="0.9" fill="#2ec87a"/>
+      </g>
+    </svg>
+    <span class="nav-wordmark">PANAMA <span>HYDROX</span></span>
+  </div>
+  <span class="nav-tag">Smart Hydroponics. Sustainable Future.</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="grid-lines"></div>
+  <div class="glow-bottom"></div>
+
+  <p class="hero-eyebrow">Coming Soon</p>
+
+  <div class="hero-logo-wrap">
+    <svg class="hero-logo-svg" viewBox="0 -8 90 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hg1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#1e4a30"/>
+          <stop offset="50%" stop-color="#103a48"/>
+          <stop offset="100%" stop-color="#081e2e"/>
+        </linearGradient>
+        <clipPath id="hc1">
+          <path d="M45 5 C45 5 12 25 12 52 C12 69.7 26.8 85 45 85 C63.2 85 78 69.7 78 52 C78 25 45 5 45 5Z"/>
+        </clipPath>
+      </defs>
+      <path d="M45 5 C45 5 12 25 12 52 C12 69.7 26.8 85 45 85 C63.2 85 78 69.7 78 52 C78 25 45 5 45 5Z" fill="url(#hg1)"/>
+      <g clip-path="url(#hc1)">
+        <line x1="45" y1="5" x2="45" y2="85" stroke="rgba(0,0,0,0.4)" stroke-width="1.2"/>
+        <path d="M24 38 C21 45 20 53 22 60 C24 66 28 71 32 74" stroke="#1aacb0" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M33 24 C30 31 30 38 33 44" stroke="#1aacb0" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.5"/>
+        <path d="M54 46 L54 70" stroke="#2ec87a" stroke-width="2" stroke-linecap="round"/>
+        <path d="M54 56 L61 49" stroke="#2ec87a" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M54 65 L61 61" stroke="#2ec87a" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="63" cy="43" r="3" fill="#2ec87a"/>
+        <circle cx="66" cy="54" r="2.4" fill="#1aacb0"/>
+        <circle cx="62" cy="65" r="2.2" fill="#2ec87a"/>
+        <line x1="63" y1="46" x2="62" y2="52" stroke="#2ec87a" stroke-width="1.2" opacity="0.5"/>
+        <line x1="66" y1="56" x2="63" y2="63" stroke="#1aacb0" stroke-width="1.2" opacity="0.5"/>
+      </g>
+    </svg>
+  </div>
+
+  <h1>Where Biology Meets<br><em>Precision</em></h1>
+  <p class="hero-sub">Pharmaceutical-grade controlled cultivation</p>
+
+  <div class="hero-divider"></div>
+
+  <p class="hero-statement">
+    We are building a platform to produce <strong>standardised bioactive compounds</strong> at scale — saffron, ashwagandha, cordyceps — in fully controlled environments where every variable is engineered, not hoped for.
+  </p>
+
+
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- ORIGIN -->
+<section style="border-top: 1px solid var(--border);">
+  <div class="section">
+    <p class="section-label reveal">Origin</p>
+    <div class="origin-grid">
+      <div class="origin-left reveal">
+        <h2>Agriculture failed us.<br><em>So we rebuilt it.</em></h2>
+        <p class="origin-text">In 2013–14, a single climate event wiped out an entire 5,000-acre ginger crop. Not because demand wasn't there. Not because farmers didn't work hard enough.</p>
+        <p class="origin-text">But because agriculture, as it exists today, is fundamentally unpredictable.</p>
+        <div class="pull-quote">"What if agriculture didn't behave like agriculture? What if it behaved like manufacturing?"</div>
+        <p class="origin-text">That question became Panama HydroX. Four years of investment into precision-controlled cultivation — not for food, but for pharmaceutical-grade crops where value is measured in the consistency of bioactive compounds.</p>
+      </div>
+      <div class="origin-right reveal" style="transition-delay: 0.2s;">
+        <div class="stat-card">
+          <div class="stat-number">5,000</div>
+          <div class="stat-label">Acres lost</div>
+          <div class="stat-desc">A single climate event. The moment that exposed the fragility of conventional agriculture and the cost of unpredictability.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">4+</div>
+          <div class="stat-label">Years building</div>
+          <div class="stat-desc">Deep investment into precision-controlled cultivation systems designed for pharmaceutical-grade consistency.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Variable control</div>
+          <div class="stat-desc">Light, nutrients, humidity, temperature, CO₂ — every parameter engineered. Not one left to chance.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<div class="approach-section">
+  <div class="approach-inner">
+    <h2 class="approach-headline reveal">From Farming<br>to <em>Controlled Bio-Production</em></h2>
+    <p class="approach-sub reveal">Our model is simple. Powerful. And deliberate.</p>
+    <div class="pillars">
+      <div class="pillar reveal">
+        <div class="pillar-num">01</div>
+        <div class="pillar-title">Produce</div>
+        <h3>High-value crops in controlled environments</h3>
+        <p>Precision cultivation of saffron, ashwagandha, and cordyceps in purpose-built systems. Every harvest meets pharmaceutical-grade standards before it leaves the facility.</p>
+      </div>
+      <div class="pillar reveal" style="transition-delay: 0.15s;">
+        <div class="pillar-num">02</div>
+        <div class="pillar-title">Ascend</div>
+        <h3>Move up the value chain into extracts and actives</h3>
+        <p>Raw production is just the foundation. We extract and standardise bioactive compounds — the currency of nutraceuticals and pharmaceuticals — at consistent potency.</p>
+      </div>
+      <div class="pillar reveal" style="transition-delay: 0.3s;">
+        <div class="pillar-num">03</div>
+        <div class="pillar-title">Scale</div>
+        <h3>Replicate the intelligence layer through partnerships</h3>
+        <p>Once consistency is proven, scale becomes inevitable. We build the technology and knowledge platform that allows replication — across geographies, crops, and partners.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CROPS -->
+<div class="crops-section">
+  <p class="section-label reveal">Focus Crops</p>
+  <h2 class="reveal" style="font-family:'Playfair Display',serif; font-weight:300; font-size:clamp(2rem,4vw,3rem); max-width:600px; line-height:1.2;">
+    We are not growing lettuce.<br><em style="color:var(--teal); font-style:italic;">We are engineering value.</em>
+  </h2>
+  <div class="crops-grid">
+    <div class="crop-card reveal">
+      <span class="crop-icon">🌸</span>
+      <div class="crop-name">Saffron</div>
+      <div class="crop-category">Nutraceutical · Pharmaceutical</div>
+      <p class="crop-desc">The world's most valuable crop by weight. In controlled environments, we unlock consistent crocin and safranal content — the compounds that define its therapeutic value.</p>
+      <div class="crop-value">
+        <span class="crop-value-num">$3,000+</span>
+        <span class="crop-value-label">/ kg (premium grade)</span>
+      </div>
+    </div>
+    <div class="crop-card reveal" style="transition-delay: 0.15s;">
+      <span class="crop-icon">🌿</span>
+      <div class="crop-name">Ashwagandha</div>
+      <div class="crop-category">Adaptogen · Active Compound</div>
+      <p class="crop-desc">Demand outpacing supply globally. Precision cultivation enables standardised withanolide content — what the pharmaceutical buyer actually needs, guaranteed batch to batch.</p>
+      <div class="crop-value">
+        <span class="crop-value-num">₹8,000+</span>
+        <span class="crop-value-label">/ kg (high extract grade)</span>
+      </div>
+    </div>
+    <div class="crop-card reveal" style="transition-delay: 0.3s;">
+      <span class="crop-icon">🍄</span>
+      <div class="crop-name">Cordyceps</div>
+      <div class="crop-category">Functional Mushroom · Bioactive</div>
+      <p class="crop-desc">Rare in nature. Reproducible in our system. Controlled environments eliminate the wild-harvest variability that makes cordyceps unreliable for pharmaceutical formulation.</p>
+      <div class="crop-value">
+        <span class="crop-value-num">$20,000+</span>
+        <span class="crop-value-label">/ kg (wild equivalent)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- VISION -->
+<div class="vision-section">
+  <div class="vision-inner">
+    <div class="vision-ornament reveal"></div>
+    <h2 class="reveal">We are not just building<br>a company. We are building<br><em>a new category.</em></h2>
+    <p class="vision-para reveal">The global medicinal plant and nutraceutical market is expanding rapidly — constrained by one fundamental problem: no reliable, standardised supply at scale. That gap is our entry point.</p>
+    <p class="vision-para reveal">In an AI-first world, the most meaningful impact will not come from digital systems alone. It will come from applying intelligence to the most unpredictable systems — like agriculture.</p>
+    <p class="vision-para reveal">Panama HydroX is an attempt to move from uncertainty to precision. From variability to standardisation. From farming to controlled bio-production.</p>
+    <p class="vision-close reveal" style="transition-delay: 0.3s;">And if we can bring predictability to this space —<br>we don't just build a business. We redefine what's possible.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <svg class="footer-logo-icon" viewBox="0 -4 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="fg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#1e4a30"/>
+            <stop offset="100%" stop-color="#081e2e"/>
+          </linearGradient>
+          <clipPath id="fc1">
+            <path d="M18 2 C18 2 5 13 5 24 C5 31.8 11 38 18 38 C25 38 31 31.8 31 24 C31 13 18 2 18 2Z"/>
+          </clipPath>
+        </defs>
+        <path d="M18 2 C18 2 5 13 5 24 C5 31.8 11 38 18 38 C25 38 31 31.8 31 24 C31 13 18 2 18 2Z" fill="url(#fg1)"/>
+        <g clip-path="url(#fc1)">
+          <line x1="18" y1="2" x2="18" y2="38" stroke="rgba(0,0,0,0.4)" stroke-width="0.8"/>
+          <path d="M10 18 C9 22 9 26 10 30 C11 33 13 35 15 36" stroke="#1aacb0" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          <path d="M22 20 L22 30 M22 24 L25 21 M22 28 L25 26" stroke="#2ec87a" stroke-width="1.2" stroke-linecap="round"/>
+          <circle cx="26" cy="19" r="1.2" fill="#2ec87a"/>
+        </g>
+      </svg>
+      <span class="footer-brand">PANAMA <span>HYDROX</span></span>
+    </div>
+    <div style="font-size:0.7rem; color: var(--text-muted); letter-spacing:0.15em;">
+      © 2026 Panama Hydrox. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  reveals.forEach(el => el.classList.add('animate-ready'));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => obs.observe(el));
+
+
+</script>
+</body>
+</html>
